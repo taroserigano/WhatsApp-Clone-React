@@ -23,8 +23,12 @@ export function ConversationsProvider({ id, children }) {
 
   const addMessageToConversation = useCallback(({ recipients, text, sender }) => {
     setConversations(prevConversations => {
+      
       let madeChange = false
       const newMessage = { sender, text }
+      
+      // if the recipients are the same, add to the prevConversations
+      // otherwise, just the conversation as is 
       const newConversations = prevConversations.map(conversation => {
         if (arrayEquality(conversation.recipients, recipients)) {
           madeChange = true
@@ -33,12 +37,14 @@ export function ConversationsProvider({ id, children }) {
             messages: [...conversation.messages, newMessage]
           }
         }
-
         return conversation
       })
-
+      
+      // meaning, it adds more message to current messages; making Changes
       if (madeChange) {
         return newConversations
+        
+        // if no madeChange, then add the new recipients, and messages
       } else {
         return [
           ...prevConversations,
@@ -61,7 +67,7 @@ export function ConversationsProvider({ id, children }) {
 
     addMessageToConversation({ recipients, text, sender: id })
   }
-
+   
   const formattedConversations = conversations.map((conversation, index) => {
     const recipients = conversation.recipients.map(recipient => {
       const contact = contacts.find(contact => {
