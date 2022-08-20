@@ -69,10 +69,14 @@ export function ConversationsProvider({ id, children }) {
   }
    
   const formattedConversations = conversations.map((conversation, index) => {
+    
+    // just find the recipient from the contact list, by looping through repicient inside the contact list
     const recipients = conversation.recipients.map(recipient => {
       const contact = contacts.find(contact => {
         return contact.id === recipient
       })
+      
+      
       const name = (contact && contact.name) || recipient
       return { id: recipient, name }
     })
@@ -87,7 +91,7 @@ export function ConversationsProvider({ id, children }) {
     })
     
     const selected = index === selectedConversationIndex
-    return { ...conversation, messages, recipients, selected }
+    return { ...conversation, messages, recipients, selected }  // return so far conversation, plus repients, and msg
   })
 
   const value = {
