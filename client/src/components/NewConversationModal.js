@@ -4,22 +4,28 @@ import { useContacts } from '../contexts/ContactsProvider'
 import { useConversations } from '../contexts/ConversationsProvider'
 
 export default function NewConversationModal({ closeModal }) {
-  const [selectedContactIds, setSelectedContactIds] = useState([])
+  
+  const [selectedContactIds, setSelectedContactIds] = useState([])  // selected users for chatting with 
   const { contacts } = useContacts()
-  const { createConversation } = useConversations()
-
+  const { createConversation } = useConversations()  // initiate new converation 
+  
+  // Create button will create new conversation 
   function handleSubmit(e) {
     e.preventDefault()
-
     createConversation(selectedContactIds)
     closeModal()
   }
-
+  
+  
   function handleCheckboxChange(contactId) {
     setSelectedContactIds(prevSelectedContactIds => {
       if (prevSelectedContactIds.includes(contactId)) {
         return prevSelectedContactIds.filter(prevId => {
-          return contactId !== prevId  // remove the matched Id - filter out 
+          return contactId !== prevId  // long code but...  all this means
+                                       // while keeping already selected Contacts IDs,
+                                       // If you select the ID and it is already a member of Selected users ID, 
+                                       // Just remove it 
+                                       // Otherwise, Add that Person to the Selected Users list 
         })
       } else {
         return [...prevSelectedContactIds, contactId]
